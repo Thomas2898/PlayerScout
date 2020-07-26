@@ -782,18 +782,12 @@ def displayStats():
                 statChoice = request.form["StatChoice"]
                 yearChoice = request.form["yearChoice"]
                 startYear = "-01-01"
-                endYear = "-31-12"
+                endYear = "-12-31"
 
-                statDetails = statistic.query.filter_by(statDate="2020-09-05").all()
+                startYear = yearChoice + startYear
+                endYear = yearChoice + endYear
 
-                if statDetails:
-                    print("###############")
-                    print("THIS DATE WORKS")
-                    print("###############")
-                else:
-                    print("###############")
-                    print("Date can not be found")
-                    print("###############")
+                #statDetails = statistic.query.filter(statistic.statDate.between(startYear, endYear)).all()
 
                 #Used to check if the user has not chosen a stat or year
                 #and if they havnt, the page is reloaded with a warning asking the user to select a stat and year
@@ -803,8 +797,8 @@ def displayStats():
                     return redirect(url_for("displayStats"))
 
                 playersDetails = player.query.filter_by(userId=usersDetails._id, pName=playerNameBar).first()
-                statDetails = statistic.query.filter_by(playerId=playersDetails.pId).all()
-                #statDetails = statistic.query.filter(statistic.playerId == playersDetails.pId, statistic.statDate.between(fromDatePython, toDatePython)).all()
+                #statDetails = statistic.query.filter_by(playerId=playersDetails.pId).all()
+                statDetails = statistic.query.filter(statistic.playerId == playersDetails.pId, statistic.statDate.between(startYear, endYear)).all()
                 intYearChoice = int(yearChoice)
 
                 playerStats = []
@@ -819,41 +813,38 @@ def displayStats():
                     completed = 0
                     uncompleted = 0
                     for x in statDetails:
-                        getFullDate = x.statDate
-                        getYear = getFullDate.year
+                        #Used to get the month of the cureent statistic
+                        getDate = x.statDate
+                        getMonth = getDate.month
 
-                        if intYearChoice == getYear:
-                            # print(x.oppositionTeam)
-                            getDate = x.statDate
-                            getMonth = getDate.month
+                        print("This is the date")
+                        print(getDate)
 
-                            if i == getMonth:
+                        if i == getMonth:
+                            if statChoice == "Passing":
+                                completed = completed + x.passCompleted
+                                uncompleted = uncompleted + x.passUnCompleted
 
-                                if statChoice == "Passing":
-                                    completed = completed + x.passCompleted
-                                    uncompleted = uncompleted + x.passUnCompleted
+                            if statChoice == "Shooting":
+                                completed = completed + x.shotsOnTarget
+                                uncompleted = uncompleted + x.shotsOffTarget
 
-                                if statChoice == "Shooting":
-                                    completed = completed + x.shotsOnTarget
-                                    uncompleted = uncompleted + x.shotsOffTarget
+                            if statChoice == "Finishing":
+                                completed = completed + x.goalsScored
+                                uncompleted = uncompleted + x.shotsOnTarget
 
-                                if statChoice == "Finishing":
-                                    completed = completed + x.goalsScored
-                                    uncompleted = uncompleted + x.shotsOnTarget
+                            if statChoice == "Dribbling":
+                                completed = completed + x.dribbleSuc
+                                uncompleted = uncompleted + x.dribbleUnSuc
 
-                                if statChoice == "Dribbling":
-                                    completed = completed + x.dribbleSuc
-                                    uncompleted = uncompleted + x.dribbleUnSuc
-
-                                if statChoice == "Tackling":
-                                    completed = completed + x.tacklesSuc
-                                    uncompleted = uncompleted + x.foulsCommitted
+                            if statChoice == "Tackling":
+                                completed = completed + x.tacklesSuc
+                                uncompleted = uncompleted + x.foulsCommitted
 
                     attempted = completed + uncompleted
 
                     #This is done because goalsScored is already part shotsOnTarget, no need to add them together
                     if statChoice == "Finishing":
-                        attempted = 0
                         attempted = uncompleted
 
                     # Used to check if the player has attempted a pass
@@ -899,13 +890,9 @@ def displayStats():
                 #Used count how many matches a player played between two selected dates
                 gameCounter = 0
                 goalAttempts = 0
-                goalPercentage = 0
                 goalScored=0
-                finishingAcurracy=0
                 passAttempts = 0
-                passPercentage = 0
                 passesCompleted=0
-                passAcurracy=0
 
                 shotAttempts = 0
                 shotsOnTarget = 0
@@ -931,34 +918,13 @@ def displayStats():
                 #To check if the user wants statistics between two selected dates
                 if fromDate:
                     print("Two dates have been entered")
-
-                    # Used to split the date string up and format it, so it can be compared to dates in the database
-                    x = fromDate.split("-")
-                    fromDateyear = x[0]
-                    fromDateyearInt = int(fromDateyear)
-                    fromDatemonth = x[1]
-                    fromDatemonthInt = int(fromDatemonth)
-                    fromDateday = x[2]
-                    fromDatedayInt = int(fromDateday)
-                    fromDatePython = datetime.date(fromDateyearInt, fromDatemonthInt, fromDatedayInt)
-
                     if toDate and fromDate:
                         print("Both dates have been selected")
 
-                        # Used to split the date string up and format it, so it can be compared to dates in the database
-                        y = toDate.split("-")
-                        toDateyear = y[0]
-                        toDateyearInt = int(toDateyear)
-                        toDatemonth = y[1]
-                        toDatemonthInt = int(toDatemonth)
-                        toDateday = y[2]
-                        toDatedayInt = int(toDateday)
-                        toDatePython = datetime.date(toDateyearInt, toDatemonthInt, toDatedayInt)
-
                         if position == "All":
-                            playerStatDetailsToFrom = statistic.query.filter(statistic.playerId == playersDetails.pId, statistic.statDate.between(fromDatePython, toDatePython)).all()
+                            playerStatDetailsToFrom = statistic.query.filter(statistic.playerId == playersDetails.pId, statistic.statDate.between(fromDate, toDate)).all()
                         else:
-                            playerStatDetailsToFrom = statistic.query.filter(statistic.playerId == playersDetails.pId, statistic.position == position, statistic.statDate.between(fromDatePython, toDatePython)).all()
+                            playerStatDetailsToFrom = statistic.query.filter(statistic.playerId == playersDetails.pId, statistic.position == position, statistic.statDate.between(fromDate, toDate)).all()
 
                         #Used to check if the query on the database returned any data
                         #If no data is returned then the displayStats page is loaded with a message telling the user that no data was found
@@ -990,7 +956,7 @@ def displayStats():
                             tacklesAttempted = tacklesAttempted + x.tacklesSuc + x.foulsCommitted
                             tacklesSuc = tacklesSuc + x.tacklesSuc
 
-                            fouled = fouled + x.foulsCommitted
+                            fouled = fouled + x.foulsSuffered
 
                             yellowCard = yellowCard + x.yellowCard
                             redCard = redCard + x.redCard
@@ -1002,9 +968,9 @@ def displayStats():
                     else:
                         print("From Date only selected")
                         if position == "All":
-                            playerStatDetailsToFrom = statistic.query.filter_by(playerId=playersDetails.pId, statDate=fromDatePython).first()
+                            playerStatDetailsToFrom = statistic.query.filter_by(playerId=playersDetails.pId, statDate=fromDate).first()
                         else:
-                            playerStatDetailsToFrom = statistic.query.filter_by(playerId=playersDetails.pId, position=position, statDate=fromDatePython).first()
+                            playerStatDetailsToFrom = statistic.query.filter_by(playerId=playersDetails.pId, position=position, statDate=fromDate).first()
 
                         # Used to check if the query on the database returned any data
                         # If no data is returned then the displayStats page is loaded with a message telling the user that no data was found
@@ -1034,7 +1000,7 @@ def displayStats():
                         tacklesAttempted = tacklesAttempted + playerStatDetailsToFrom.tacklesSuc + playerStatDetailsToFrom.foulsCommitted
                         tacklesSuc = tacklesSuc + playerStatDetailsToFrom.tacklesSuc
 
-                        fouled = fouled + playerStatDetailsToFrom.foulsCommitted
+                        fouled = fouled + playerStatDetailsToFrom.foulsSuffered
 
                         yellowCard = yellowCard + playerStatDetailsToFrom.yellowCard
                         redCard = redCard + playerStatDetailsToFrom.redCard
