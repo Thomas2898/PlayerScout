@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% block title %}Record Statistics{% endblock %}
+{% block content%}
+<!-- Used to display message on top of the page, message is received from server.py -->
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+{% endwith %}
+<!--
+<form action="#" method="POST">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown button
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+    </div>
+    <p>Passes missed:</p>
+    <p><input type="number" name="passesMissed"/></p>
+    <p>Passes completed:</p>
+    <p><input type="number" name="passesCompleted"/></p>
+    <p>Goals scored:</p>
+    <p><input type="number" name="goalsMissed"/></p>
+    <p>Goals missed:</p>
+    <p><input type="number" name="goalsScored"/></p>
+    <input type="submit" value="submit"/>
+</form>
+-->
+<div id="container" class="recordStatscontainer">
+            <div class="row">
+                <div class="col-sm-10 offset-sm-1 text-center">
+                    <div class="info-form">
+                        <form action="#" class="justify-content-center" method="POST">
+                          <div class="form-row">
+                              <div class="col">
+                                  <label for="PlayerSelected">Select Player</label>
+                                  <select class="browser-default custom-select" name="PlayerSelected" id="PlayerSelected">
+                                      <option selected>Select Player</option>
+                                      {% for item in values%}
+                                        <option value="{{item.pName}}">{{item.pName}}</option>
+                                      {% endfor %}
+                                  </select>
+                              </div>
+                              <div class="col">
+                                  <label for="Position">Players Position</label>
+                                  <select class="browser-default custom-select" name="Position" id="Position">
+                                      <option selected>Players Position</option>
+                                      <option value="GK">GK Goalkeeper</option>
+                                      <option value="RB">RB Right Back</option>
+                                      <option value="CB">CB Center Back</option>
+                                      <option value="LB">LB Left Back</option>
+                                      <option value="RWB">RWB Right Wing Back</option>
+                                      <option value="LWB">LWB Left Wing Back</option>
+                                      <option value="CDM">CDM Center Defensive Midfielder</option>
+                                      <option value="CM">CM Center Midfielder</option>
+                                      <option value="CAM">CAM Center Attacking Midfielder</option>
+                                      <option value="RM">RM Right Midfielder</option>
+                                      <option value="LM">LM Left Midfielder</option>
+                                      <option value="RW">RW Right Wing</option>
+                                      <option value="LW">LW Left Wing</option>
+                                      <option value="CF">CF Center Forward</option>
+                                      <option value="ST">ST Striker</option>
+                                  </select>
+                              </div>
+                              <div class="col">
+                                  <label for="playerTeam">Players team</label>
+                                  <input type="Text" class="form-control" name="playerTeam" id="playerTeam" aria-describedby="addplayerTeam" required>
+                              </div>
+                              <div class="col">
+                                  <label for="oppositionTeam">Opposition team</label>
+                                  <input type="Text" class="form-control" name="oppositionTeam" id="oppositionTeam" aria-describedby="addoppositionTeam" required>
+                              </div>
+                          </div>
+                          <div class="form-row">
+                              <div class="col">
+                                  <label for="dribbleSuc">Successful Dribbles</label>
+                                  <input type="number" class="form-control" name="dribbleSuc" id="dribbleSuc" aria-describedby="adddribbleSuc" min="0" required>
+                              </div>
+                              <div class="col">
+                                  <label for="dribbleUnSuc">Unsuccessful Dribbles</label>
+                                  <input type="number" class="form-control" name="dribbleUnSuc" id="dribbleUnSuc" aria-describedby="adddribbleUnSuc" min="0" required>
+                              </div>
+                          </div>
+                          <div class="form-row">
+                              <div class="col">
+                                <label for="passesCompleted">Passes Completed</label>
+                                <input type="number" class="form-control" name="passesCompleted" id="passesCompleted" aria-describedby="addpassesCompleted" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="passesMissed">Passes Uncompleted</label>
+                                <input type="number" class="form-control" name="passesMissed" id="passesMissed" aria-describedby="addpassesMissed" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="assists">Assists</label>
+                                <input type="number" class="form-control" name="assists" id="assists" aria-describedby="addassists" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="chancesCreated">Chances created</label>
+                                <input type="number" class="form-control" name="chancesCreated" id="chancesCreated" aria-describedby="addchancesCreated" min="0" required>
+                              </div>
+                          </div>
+                          <div class="form-row">
+                              <div class="col">
+                                <label for="goalsScored">Goals scored</label>
+                                <input type="number" class="form-control" name="goalsScored" id="goalsScored" aria-describedby="addgoalsScored" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="shotsOnTarget">Shots on target</label>
+                                <input type="number" class="form-control" name="shotsOnTarget" id="shotsOnTarget" aria-describedby="addshotsOnTarget" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="shotsOffTarget">Shots off target</label>
+                                <input type="number" class="form-control" name="shotsOffTarget" id="shotsOffTarget" aria-describedby="addshotsOffTarget" min="0" required>
+                              </div>
+                          </div>
+                          <div class="form-row">
+                              <div class="col">
+                                <label for="clearances">Clearances</label>
+                                <input type="number" class="form-control" name="clearances" id="clearances" aria-describedby="addclearances" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="interceptions">Interceptions</label>
+                                <input type="number" class="form-control" name="interceptions" id="interceptions" aria-describedby="addinterceptions" min="0" required>
+                              </div>
+                          </div>
+
+                          <div class="form-row">
+                              <div class="col">
+                                <label for="tacklesSuc">Successful tackles</label>
+                                <input type="number" class="form-control" name="tacklesSuc" id="tacklesSuc" aria-describedby="addtacklesSuc" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="foulsSuffered">Fouls suffered</label>
+                                <input type="number" class="form-control" name="foulsSuffered" id="foulsSuffered" aria-describedby="addfoulsSuffered" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="foulsCommitted">Fouls committed</label>
+                                <input type="number" class="form-control" name="foulsCommitted" id="foulsCommitted" aria-describedby="addfoulsCommitted" min="0" required>
+                              </div>
+                          </div>
+                          <div class="form-row">
+                              <div class="col">
+                                <label for="yellowCard">Yellow card(s)</label>
+                                <input type="number" class="form-control" name="yellowCard" id="yellowCard" aria-describedby="addyellowCard" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="redCard">Red card</label>
+                                <input type="number" class="form-control" name="redCard" id="redCard" aria-describedby="addredCard" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="minutesPlayed">Minutes played</label>
+                                <input type="number" class="form-control" name="minutesPlayed" id="minutesPlayed" aria-describedby="addminutesPlayed" min="0" required>
+                              </div>
+                              <div class="col">
+                                <label for="statDate">Date</label>
+                                <input type="date" class="form-control" name="statDate" id="statDate" aria-describedby="addstatDate" min="0" required>
+                              </div>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}viewUsers{% endblock %}
+{% block content%}
+<!--<div class="container">-->
+<div class="table-responsive">
+    <h2>Users</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                </tr>
+            </thead>
+        <tbody>
+            {% for item in values%}
+                <tr>
+                    <form action="#" method="post">
+                        <!--<p>Name: {{item.name}}, Email: {{item.email}}, Password: {{item.password}}</p>-->
+                        <td><input type="text" name="userName" placeholder="{{item.name}}" value="{{item.name}}"/></td>
+                        <td><input type="text" name="userEmail" placeholder="{{item.email}}" value="{{item.email}}"/></td>
+                        <td><input type="text" name="userPassword" placeholder="{{item.password}}" value="{{item.password}}"/></td>
+                        <td><input type="submit" name="update" value="Update"/></td>
+                        <td><input type="submit" name="delete" value="Delete"/></td>
+                    </form>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

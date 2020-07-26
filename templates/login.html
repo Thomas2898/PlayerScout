@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}login page{% endblock %}
+{% block content%}
+<!-- Used to display message on top of the page, message is received from server.py -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+<style>
+</style>
+<!--<body class="text-center">-->
+<div id="container" class="container">
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 text-center">
+                    <div class="info-form">
+                        <form action="#" class="form-signin justify-content-center" method="post">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" name="username" id="username" aria-describedby="enterUsername" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" name="password" id="password" aria-describedby="enterPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Log in</button>
+                            <input type="Button" class="btn btn-primary" onclick="window.location.href='createAccount'" value="Create account"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+</div>
+<!--</body>-->
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Players page{% endblock %}
+{% block content%}
+<!--<div class="container">-->
+<!-- Used to display message on top of the page, message is received from server.py -->
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+{% endwith %}
+<div class="table-responsive container">
+    <h5>Players</h5>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>DOB</th>
+                </tr>
+            </thead>
+        <tbody>
+            {% for item in values%}
+                <tr>
+                    <form action="#" method="post">
+                        <!--<p>Name: {{item.name}}, Email: {{item.email}}, Password: {{item.password}}</p>-->
+                        <td><input type="text" class="form-control bg-dark" name="playerName" placeholder="{{item.pName}}" value="{{item.pName}}" readonly></td>
+                        <td><input type="text" class="form-control bg-dark" name="position" placeholder="{{item.Position}}" value="{{item.Position}}" readonly></td>
+                        <td><input type="text" class="form-control bg-dark" name="height" placeholder="{{item.Height}}" value="{{item.Height}}" readonly></td>
+                        <td><input type="text" class="form-control bg-dark" name="weight" placeholder="{{item.Weight}}" value="{{item.Weight}}" readonly></td>
+                        <td><input type="Date" class="form-control bg-dark" name="playerDOB" placeholder="{{item.DOB}}" value="{{item.DOB}}" readonly></td>
+                        <td><button type="submit" name="update" class="btn btn-primary">Update</button></td>
+                        <td><button type="submit" name="delete" class="btn btn-primary">Delete</button></td>
+                    </form>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<br>
+<br>
+<div id="container" class="playercontainer">
+            <div class="row">
+                <div class="col-sm-6 offset-sm-3 text-center">
+                    <div class="info-form">
+                        <h5>Add Player</h5>
+                            <form action="#" method="post" class="justify-content-center">
+                                 <div class="form-row">
+                                     <div class="col">
+                                         <label for="playerName">Player name</label>
+                                         <input type="text" class="form-control" name="playerName" id="playerName" aria-describedby="enterPlayername" required>
+                                     </div>
+                                     <div class="col">
+                                         <label for="position">Position</label>
+                                         <input type="text" class="form-control" name="position" id="position" aria-describedby="enterPosition" required>
+                                     </div>
+                                 </div>
+                                 <div class="form-row">
+                                     <div class="col">
+                                         <label for="height">Height</label>
+                                         <input type="text" class="form-control" name="height" id="height" aria-describedby="enterHeight" required>
+                                     </div>
+                                     <div class="col">
+                                         <label for="weight">Weight</label>
+                                         <input type="text" class="form-control" name="weight" id="weight" aria-describedby="enterWeight" required>
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <label for="playerDOB">DOB</label>
+                                     <input type="date" class="form-control" name="playerDOB" id="playerDOB" aria-describedby="enterDOB" required>
+                                 </div>
+                                <button type="submit" name="add" class="btn btn-primary">Add Player</button>
+                            </form>
+                    </div>
+                </div>
+            </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}updatePlayer page{% endblock %}
+{% block content%}
+<!-- Used to display message on top of the page, message is received from server.py -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+<div class="container">
+    <p>Current Player Data Name: {{displayPlayerName}} Position: {{displayPlayerPos}} Height: {{displayPlayerHeight}} Weight: {{displayPlayerWeight}} DOB: {{displayPlayerDOB}}</p>
+</div>
+<div id="container" class="updatePlayercontainer">
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 text-center">
+                    <div class="info-form">
+                        <form action="#" class="justify-content-center" method="post">
+                            <p>Name:</p>
+                            <p><input type="text" class="form-control" name="newPlayerName" required/></p>
+                            <p>Position:</p>
+                            <p><input type="text" class="form-control" name="newPlayerPos" required/></p>
+                            <p>Height:</p>
+                            <p><input type="text" class="form-control" name="newPlayerHeight" required/></p>
+                            <p>Weight:</p>
+                            <p><input type="text" class="form-control" name="newPlayerWeight" required/></p>
+                            <p>DOB:</p>
+                            <p><input type="Date" class="form-control" name="newPlayerDOB" required/></p>
+                            <button type="submit" name="update" class="btn btn-primary">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+</div>
+{% endblock %}

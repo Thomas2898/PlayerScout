@@ -1,0 +1,60 @@
+a {
+    color:#c7cbd4;
+}
+p {
+    color:#c7cbd4;
+    text-align: center;
+}
+body {
+    background-color:#353d45;
+}
+label {
+    color:#c7cbd4
+}
+input[type=text], input[type=date], input[type=number], input[type=password]{
+    background-color: #353d45;
+    color: #c7cbd4;
+}
+
+/* Used to change the color of the selects (drop down) */
+#PlayerSelected{
+    background-color: #353d45;
+    color: #c7cbd4;
+}
+#Position{
+    background-color: #353d45;
+    color: #c7cbd4;
+}
+#PlayerSelectSearch{
+    background-color: #353d45;
+    color: #c7cbd4;
+}
+#StatChoice{
+    background-color: #353d45;
+    color: #c7cbd4;
+}
+#yearChoice{
+    background-color: #353d45;
+    color: #c7cbd4;
+}
+#PlayerSelectedTable{
+    background-color: #353d45;
+    color: #c7cbd4;
+}
+
+th{
+    color:#c7cbd4
+}
+h5{
+    color:#c7cbd4
+}
+
+td input[type=text]{
+    background-color: #353d45;
+    color: #c7cbd4;
+}
+
+td p{
+    color:#c7cbd4;
+    text-align: center;
+}

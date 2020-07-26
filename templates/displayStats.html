@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% block title %}Display Statistics{% endblock %}
+{% block content%}
+<!-- Used to display message on top of the page, message is received from server.py -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+<p xmlns="http://www.w3.org/1999/html">{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+<style>
+
+</style>
+<!-- <script scr="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script> -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
+<body onload="createChart()">
+<div class="container">
+<form action="#" name="form1" method="POST">
+    <div class="form-row">
+        <div class="col">
+             <label for="PlayerSelected">Select Player</label>
+                  <select class="browser-default custom-select" name="PlayerSelected" id="PlayerSelected">
+                      <option selected>Select Player</option>
+                      {% for item in playersNames%}
+                        <option value="{{item.pName}}">{{item.pName}}</option>
+                      {% endfor %}
+                  </select>
+        </div>
+        <div class="col">
+            <label for="StatChoice">Stat</label>
+                <select class="browser-default custom-select" name="StatChoice" id="StatChoice">
+                    <option value="statSelected"selected>Stat Choice</option>
+                    <option value="Finishing">Finishing</option>
+                    <option value="Shooting">Shooting</option>
+                    <option value="Passing">Passing</option>
+                    <option value="Dribbling">Dribbling</option>
+                    <option value="Tackling">Tackling</option>
+                </select>
+        </div>
+        <div class="col">
+            <label for="yearChoice">Year</label>
+                <select class="browser-default custom-select" name="yearChoice" id="yearChoice">
+                    <option value="yearSelected"selected>Year Choice</option>
+                    <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                    <option value="2016">2016</option>
+                    <option value="2015">2015</option>
+                </select>
+        </div>
+    </div>
+    <button type="submit" name="add" class="btn btn-primary">Add</button>
+    <button type="submit" name="clearBar" class="btn btn-primary">Clear Barchart</button>
+</form>
+</div>
+</br>
+
+<div class="container">
+    <canvas id="myChart"></canvas>
+</div>
+</br>
+</br>
+
+<div class="container">
+<form action="#" name="form2" method="POST">
+    <div class="form-row">
+        <div class="col">
+            <label for="PlayerSelectedTable">Select Player</label>
+                  <select class="browser-default custom-select" name="PlayerSelectedTable" id="PlayerSelectedTable">
+                      <option selected>Select Player</option>
+                      {% for item in playersNames%}
+                        <option value="{{item.pName}}">{{item.pName}}</option>
+                      {% endfor %}
+                  </select>
+        </div>
+        <div class="col">
+             <label for="Position">Position</label>
+                <select class="browser-default custom-select" name="Position" id="Position">
+                    <option value="All" selected>All</option>
+                    <option value="GK">GK Goalkeeper</option>
+                    <option value="RB">RB Right Back</option>
+                    <option value="CB">CB Center Back</option>
+                    <option value="LB">LB Left Back</option>
+                    <option value="RWB">RWB Right Wing Back</option>
+                    <option value="LWB">LWB Left Wing Back</option>
+                    <option value="CDM">CDM Center Defensive Midfielder</option>
+                    <option value="CM">CM Center Midfielder</option>
+                    <option value="CAM">CAM Center Attacking Midfielder</option>
+                    <option value="RM">RM Right Midfielder</option>
+                    <option value="LM">LM Left Midfielder</option>
+                    <option value="RW">RW Right Wing</option>
+                    <option value="LW">LW Left Wing</option>
+                    <option value="CF">CF Center Forward</option>
+                    <option value="ST">ST Striker</option>
+                </select>
+        </div>
+        <div class="col">
+            <label for="fromDate">From Date</label>
+            <input type="date" class="form-control" name="fromDate" id="fromDate" aria-describedby="fromDate">
+        </div>
+        <div class="col">
+            <label for="toDate">To Date</label>
+            <input type="date" class="form-control" name="toDate" id="toDate" aria-describedby="toDate">
+        </div>
+    </div>
+    <button type="submit" name="addToTable" class="btn btn-primary">Add Row</button>
+    <button type="submit" name="clearTable" class="btn btn-primary">Clear Table</button>
+</form>
+</div>
+</br>
+
+<div class="table-responsive container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Name</th>
+                    <th>Shooting</th>
+                    <th>Finishing</th>
+                    <th>Passing</th>
+                    <th>Assists</th>
+                    <th>Chances created</th>
+                    <th>Clearances</th>
+                    <th>Interceptions</th>
+                    <th>Tackling</th>
+                    <th>Fouled</th>
+                    <th>Yellow/Red Card</th>
+                    <th>Minutes played</th>
+                    <th>Matches</th>
+                    <th>from Date/to Date</th>
+                </tr>
+            </thead>
+        <tbody>
+            {% for item in tableData%}
+                <tr>
+                    <form action="#" method="post">
+                        <td><p>{{item[0]}}</p></td>
+                        <td><p>{{item[1]}}</p></td>
+                        <td><p>{{item[2]}}</p></td>
+                        <td><p>{{item[3]}}</p></td>
+                        <td><p>{{item[4]}}</p></td>
+                        <td><p>{{item[5]}}</p></td>
+                        <td><p>{{item[6]}}</p></td>
+                        <td><p>{{item[7]}}</p></td>
+                        <td><p>{{item[8]}}</p></td>
+                        <td><p>{{item[9]}}</p></td>
+                        <td><p>{{item[10]}}</p></td>
+                        <td><p>{{item[11]}}</p></td>
+                        <td><p>{{item[12]}}</p></td>
+                        <td><p>{{item[13]}}</p></td>
+                        <td><p>{{item[14]}}</p></td>
+                    </form>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    var barColor = ["#00cc99", "#00ff00", "#ff0000", "#ff3399", "#ff3399"];
+
+    var updateBarcounter = 0;
+    //Used to check if how many items are in the values sent from server.py
+    {% if values %}
+        {% for item in values %}
+            updateBarcounter = updateBarcounter + 1;
+        {% endfor %}
+    {% endif %}
+
+    //Used to create the barChart
+    var barCreateCounter = 0
+    //Used as to change the color of the bars in the chart
+    var i = 0
+    {% for item in values %}
+        //Used to create the bar chart
+
+        var storeItem = "{{item[0]}}"
+        //var statName = "Passing/"
+        //var statTitle = statName.concat(storeItem)
+        if(barCreateCounter == 0){
+            var data = {
+                labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                datasets: [{
+                    label: "{{item[0]}}",
+                    backgroundColor: barColor[0],
+                    borderWidth: 1,
+                    data: [{{item[1]}}, {{item[2]}}, {{item[3]}}, {{item[4]}}, {{item[5]}}, {{item[6]}}, {{item[7]}}, {{item[8]}}, {{item[9]}}, {{item[10]}}, {{item[11]}}, {{item[12]}}]
+                }]
+            };
+
+            var myChart = document.getElementById('myChart').getContext('2d');
+            Chart.defaults.global.defaultFontColor = '#c7cbd4';
+            var myBarChart = new Chart(myChart, {
+                type: "bar",
+                data: data,
+                options:{
+                    title:{
+                        display:true,
+                        text:'Player Statistics in percentages',
+                        fontColor:'#c7cbd4'
+                    },
+                    legend:{
+                        display:true,
+                        labels:{
+                            fontColor:'#c7cbd4'
+                        }
+                    }
+                }
+            });
+        }
+
+        //Checks if there is more data received from from displayStats in server.py
+        if(updateBarcounter > 1 && barCreateCounter >= 1){
+            console.log("Hi");
+            console.log("{{item[0]}}")
+            var newDataset = {
+                label: "{{item[0]}}",
+                backgroundColor: barColor[i+1],
+                borderWidth: 1,
+                data: [{{item[1]}}, {{item[2]}}, {{item[3]}}, {{item[4]}}, {{item[5]}}, {{item[6]}}, {{item[7]}}, {{item[8]}}, {{item[9]}}, {{item[10]}}, {{item[11]}}, {{item[12]}}]
+            }
+            data.datasets.push(newDataset);
+            myBarChart.update();
+            i = i + 1
+        }
+        console.log("Checking barCreateCounter")
+        console.log(barCreateCounter)
+        barCreateCounter = barCreateCounter + 1
+    {% endfor %}
+</script>
+</body>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Update Account{% endblock %}
+{% block content%}
+<!-- Used to display message on top of the page, message is received from server.py -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+<div id="updateAcccontDetails" class="container">
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 text-center">
+                    <form action="#" class="justify-content-center" method="post">
+                        <div class="form-group">
+                            <label for="nm">Name</label>
+                            <input type="text" class="form-control" name="nm" id="nm" placeholder="{{userDetails.name}}" aria-describedby="enterName" minlength="6" maxlength="20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" name="email" id="email" placeholder="{{userDetails.email}}" aria-describedby="enterEmail" required>
+                        </div>
+                        <button type="submit" name="UpdateDet" class="btn btn-primary">UpdateDetails</button>
+                    </form>
+                </div>
+            </div>
+</div>
+<br>
+<div id="updateAcccontPassword" class="container">
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 text-center">
+                    <form action="#" class="justify-content-center" method="post">
+                        <div class="form-group">
+                            <label for="currentPass">Current Password</label>
+                            <input type="password" class="form-control" name="currentPass" id="currentPass" aria-describedby="entercurrentPass" minlength="8" maxlength="20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPass">New Password</label>
+                            <input type="password" class="form-control" name="newPass" id="newPass" aria-describedby="enternewPass" minlength="8" maxlength="20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reNewPass">Re-enter New Password</label>
+                            <input type="password" class="form-control" name="reNewPass" id="reNewPass" aria-describedby="enterreNewPass" minlength="8" maxlength="20" required>
+                            <small id="passwordHelpInline" class="text-muted">
+                              Must be 8-20 characters long.
+                            </small>
+                        </div>
+                        <button type="submit" name="updatePass" class="btn btn-primary">Update Password</button>
+                    </form>
+                </div>
+            </div>
+</div>
+{% endblock %}

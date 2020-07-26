@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}CreateAccount page{% endblock %}
+{% block content%}
+<!-- Used to display message on top of the page, message is received from server.py -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+<div id="createAcccont" class="container">
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 text-center">
+                    <form action="#" class="justify-content-center" method="post">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" name="username" id="username" aria-describedby="enterUsername" minlength="6" maxlength="20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nm">Name</label>
+                            <input type="text" class="form-control" name="nm" id="nm" aria-describedby="enterName" minlength="6" maxlength="20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" name="email" id="email" aria-describedby="enterEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pw">Password</label>
+                            <input type="password" class="form-control" name="pw" id="pw" aria-describedby="enterPassword" minlength="8" maxlength="20" required>
+                            <small id="passwordHelpInline" class="text-muted">
+                              Must be 8-20 characters long.
+                            </small>
+                        </div>
+                        <button type="submit" name="Enter" class="btn btn-primary">Create Account</button>
+                    </form>
+                </div>
+            </div>
+</div>
+{% endblock %}
